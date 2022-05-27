@@ -52,9 +52,41 @@ spring:
                     result-set-open-after-log-enabled: false
                     result-set-close-after-log-enabled: false
                     # 以下是关闭断开连接的日志显示
-                    connection-close-after-log-enabled: true
+                    connection-close-after-log-enabled: false
                     connection-connect-after-log-enabled: false
                     connection-connect-before-log-enabled: false
+            # 监控页面
+            stat-view-servlet:
+                # 开启Druid自带监控页面
+                enabled: true
+                # 访问的链接
+                url-pattern: /druid/*
+                # 允许重置日志
+                reset-enable: true
+                # 登录名和密码 都为空则不需要登录 , 若密码为空则生成随机值,打印在日志中|访问monitor页面的密码
+                login-username: admin
+                login-password: admin
+                # 允许访问此监控的ip , 可以是ip格式 也可以是网络格式
+                allow: 127.0.0.1,192.168.1.0/24
+                # 拒绝的优先级比 allow 要高
+                deny:
+            # WebStatFilter URI接口请求过滤
+            web-stat-filter:
+                enabled: true
+                url-pattern: /api/*
+                exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+                # 开启会话统计
+                session-stat-enable: true
+                # session最大状态数量
+                session-stat-max-count: 1000
+                # 是否开启性能监控, 记录接口执行的详细信息
+                profile-enable: true
+                # 用户权限信息的 cookie 和 session 属性名称
+                principal-cookie-name:
+                principal-session-name:
+            # 开启 Spring 监控 , 使用 x.y.z.service.* 作为匹配,多个用,(逗号)分割
+            aop-patterns: com.example.Druid.mapper.*
+
 #mybatis:
 #    configuration:
 #        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
